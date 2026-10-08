@@ -16,7 +16,7 @@ php artisan serve --host=127.0.0.1 --port=8005
 ```
 
 ## Fresh installation
-Use PHP 8.5 for the supplied dependency lock file, Composer 2, PDO, PDO SQLite (local), or PDO MySQL (hosting), fileinfo, mbstring, openssl, DOM and XML.
+Use PHP 8.4.1 or newer for the supplied dependency lock file, Composer 2, PDO, PDO SQLite (local), or PDO MySQL (hosting), fileinfo, mbstring, openssl, DOM and XML.
 ```
 composer install
 ```
