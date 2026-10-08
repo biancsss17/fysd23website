@@ -1,0 +1,11 @@
+@extends('layouts.admin')
+@section('content')
+<a href="/admin/officers">← Officers</a><h1>{{ $officer->exists?'Edit officer':'Add officer' }}</h1><form enctype="multipart/form-data" method="post" action="{{ $officer->exists?route('admin.officers.update',$officer):route('admin.officers.store') }}">@csrf @if($officer->exists) @method('PUT') @endif<div class="editor-grid"><section class="panel">
+@foreach(['name','position','term','email','social_url'] as $field)@include('partials.admin-field',['field'=>$field,'value'=>$officer->$field,'kind'=>$field==='email'?'email':($field==='social_url'?'url':'text'),'required'=>in_array($field,['name','position'])])@endforeach
+@include('partials.admin-field',['field'=>'biography','value'=>$officer->biography,'kind'=>'textarea','rows'=>10])
+</section><aside class="panel">
+<label>Portrait<input type="file" name="photo_upload" accept="image/jpeg,image/png,image/webp,image/gif">@if($officer->photo)<img class="selected-image" src="{{ $officer->photo->url }}" alt="Current portrait">@endif</label>@if($officer->photo)<button type="button" class="text-danger" data-remove-media="{{ route('admin.media.destroy',$officer->photo) }}" data-csrf="{{ csrf_token() }}" data-media-kind="photo">Delete photo</button>@endif<p class="hint">Upload a new portrait to replace the current image. Maximum 5 MB.</p>
+@include('partials.admin-field',['field'=>'sort_order','value'=>$officer->sort_order??0,'kind'=>'number','required'=>true])
+<label>Status<select name="status"><option value="draft" @selected(old('status',$officer->status)==='draft')>Draft</option><option value="published" @selected(old('status',$officer->status)==='published')>Published</option></select></label><button class="primary" data-save>Save officer</button>
+</aside></div></form>
+@endsection

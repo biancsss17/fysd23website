@@ -1,0 +1,51 @@
+<?php
+
+return [
+    'organization' => [
+        'header_title' => ['Header title', 'text', 'UECFI DISTRICT 23 FYS'],
+        'header_subtitle' => ['Header subtitle', 'text', 'OFFICIAL WEBSITE'],
+        'organization_name' => ['Organization name', 'text', 'Union Espiritista Cristiana de Filipinas, Inc.'],
+        'acronym' => ['Acronym', 'text', 'UECFI'],
+        'district' => ['District label', 'text', 'District 23'],
+        'email' => ['Contact email', 'email', ''],
+        'phone' => ['Phone', 'text', ''],
+        'address' => ['Address', 'textarea', ''],
+        'facebook' => ['Facebook', 'url', ''],
+        'instagram' => ['Instagram', 'url', ''],
+    ],
+    'home' => [
+        'hero_kicker' => ['Hero introduction', 'text', 'WELCOME TO UECFI DISTRICT 23 FYS OFFICIAL WEBSITE'],
+        'hero_heading' => ['Hero heading (one line per phrase)', 'textarea', "Lead with purpose.\nServe with heart.\nAchieve together."],
+        'hero_description' => ['Hero description', 'textarea', 'Continuing a legacy of leadership, service, knowledge and community since 1905.'],
+        'primary_text' => ['Primary button', 'text', 'Explore activities'],
+        'primary_url' => ['Primary destination', 'path', '/activities'],
+        'secondary_text' => ['Secondary button', 'text', 'Latest news'],
+        'secondary_url' => ['Secondary destination', 'path', '/news'],
+        'heritage_year' => ['Heritage year', 'text', '1905'],
+        'heritage_kicker' => ['Heritage introduction', 'text', 'Rooted in history. Looking ahead.'],
+        'hero_motto' => ['Emblem caption', 'text', 'Knowledge · Love · Service'],
+        'stat_1_value' => ['Statistic 1 value', 'number', '500'], 'stat_1_label' => ['Statistic 1 label', 'text', 'Members'],
+        'stat_2_value' => ['Statistic 2 value', 'number', '25'], 'stat_2_label' => ['Statistic 2 label', 'text', 'Activities'],
+        'stat_3_value' => ['Statistic 3 value', 'number', '35'], 'stat_3_label' => ['Statistic 3 label', 'text', 'Achievements'],
+        'stat_4_value' => ['Statistic 4 value', 'number', '10'], 'stat_4_label' => ['Statistic 4 label', 'text', 'Officers'],
+        'stats_note' => ['Statistics note', 'text', ''],
+        'news_link' => ['News section link text', 'text', 'Explore news'],
+        'achievements_link' => ['Achievements section link text', 'text', 'Explore achievements'],
+        'activities_link' => ['Activities section link text', 'text', 'Explore activities'],
+        'officers_link' => ['Officers section link text', 'text', 'Meet our officers'],
+    ],
+    'brand' => [
+        'logo_id' => ['Official logo', 'media', ''], 'favicon_id' => ['Favicon', 'media', ''],
+        'primary_color' => ['Primary color', 'color', '#071936'], 'secondary_color' => ['Gold color', 'color', '#e7bd57'], 'accent_color' => ['Accent color', 'color', '#7966ab'],
+    ],
+    'navigation' => [
+        'nav_home' => ['Home label', 'text', 'Home'], 'nav_news' => ['News label', 'text', 'News'],
+        'nav_achievements' => ['Achievement label', 'text', 'Achievement'], 'nav_activities' => ['Activity label', 'text', 'Activity'],
+        'nav_officers' => ['Officers label', 'text', 'Officers'], 'nav_admin' => ['Login label', 'text', 'Admin login'],
+    ],
+    'footer' => [
+        'footer_heading' => ['Footer heading', 'textarea', 'Lead. Serve. Inspire.'],
+        'footer_text' => ['Footer description', 'textarea', 'Together in knowledge, service and love.'],
+        'copyright' => ['Copyright', 'text', '© UECFI District 23 FYS. All rights reserved.'],
+    ],
+];
