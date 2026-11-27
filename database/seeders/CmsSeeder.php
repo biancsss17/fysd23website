@@ -17,31 +17,59 @@ class CmsSeeder extends Seeder
 {
     public function run(): void
     {
+        // Keep the deployed CMS aligned with the checked-in local snapshot.
+        // Unknown administrator-created settings/content are preserved.
+        $localSettingOverrides = [
+            'primary_color' => '#003385',
+            'secondary_color' => '#e7bd57',
+            'accent_color' => '#4c2aa2',
+            'primary_text' => 'Explore activities',
+            'primary_url' => '/activities',
+            'stat_2_label' => 'Activities',
+            'activities_link' => 'Explore activities',
+            'nav_activities' => 'Activity',
+        ];
         foreach (config('cms') as $group) {
             foreach ($group as $key => $field) {
-                SiteSetting::firstOrCreate(['key' => $key], ['value' => $field[2]]);
+                SiteSetting::updateOrCreate(['key' => $key], ['value' => $localSettingOverrides[$key] ?? $field[2]]);
             }
+        }
+        foreach ($localSettingOverrides as $key => $value) {
+            SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
         }
         foreach ([
             ['heritage', 'A legacy that continues.', 'Knowledge, love and a shared sense of purpose.'],
             ['statistics', 'Our community, in perspective.', 'A growing story of participation.'],
             ['news', 'Stories that bring us together.', 'The latest from our community.'],
             ['achievements', 'Small steps. Lasting impact.', 'Celebrating milestones that define our journey.'],
+            ['activities', 'Purpose, put into practice.', 'Discover ways to learn, connect and serve.'],
             ['officers', 'People behind the purpose.', 'Meet the people helping our community move forward.'],
         ] as $i => $s) {
-            PageSection::firstOrCreate(['key' => $s[0]], ['title' => $s[1], 'description' => $s[2], 'sort_order' => $i]);
+            PageSection::updateOrCreate(['key' => $s[0]], ['title' => $s[1], 'description' => $s[2], 'sort_order' => $i, 'visible' => true]);
         }
         $samples = [
             'news' => ['A new chapter for our community', 'Making space for meaningful conversations', 'Looking forward, together'],
             'achievements' => ['Recognizing the spirit of service', 'A milestone in shared learning', 'Celebrating community participation'],
+            'activities' => ['Community learning circle', 'A day dedicated to service', 'Youth conversation and connection'],
+        ];
+        $sampleDates = [
+            'A new chapter for our community' => '2026-10-05 18:19:28',
+            'Making space for meaningful conversations' => '2026-10-04 18:19:28',
+            'Looking forward, together' => '2026-10-03 18:19:28',
+            'Recognizing the spirit of service' => '2026-10-05 18:19:28',
+            'A milestone in shared learning' => '2026-10-04 18:19:28',
+            'Celebrating community participation' => '2026-10-03 18:19:28',
+            'Community learning circle' => '2026-10-05 18:19:00',
+            'A day dedicated to service' => '2026-10-04 18:19:28',
+            'Youth conversation and connection' => '2026-10-03 18:19:28',
         ];
         foreach ($samples as $type => $titles) {
             foreach ($titles as $i => $title) {
-                Content::firstOrCreate(['slug' => Str::slug($title)], [
+                Content::updateOrCreate(['slug' => Str::slug($title)], [
                     'type' => $type, 'title' => $title, 'excerpt' => 'Sample content • An invitation to connect, share ideas and build a stronger community.',
                     'content' => "This is sample content for the UECFI website. It does not describe a verified organizational event or achievement.\n\nAn administrator can replace this story, add an approved photograph and publish the details through the content manager.",
-                    'category' => 'Sample content', 'status' => 'published', 'featured' => $i === 0, 'published_at' => now()->subDays($i + 1), 'sort_order' => $i,
-                    'event_date' => $type === 'news' ? null : now()->toDateString(), 'location' => null,
+                    'category' => 'Sample content', 'status' => 'published', 'featured' => $i === 0, 'published_at' => $sampleDates[$title], 'sort_order' => $i,
+                    'event_date' => $type === 'news' ? null : '2026-10-06', 'location' => $type === 'activities' ? 'To be confirmed' : null,
                 ]);
             }
         }
