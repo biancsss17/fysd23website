@@ -45,9 +45,6 @@ class CmsSeeder extends Seeder
                 ]);
             }
         }
-        foreach (['President', 'Vice President', 'Secretary', 'Treasurer'] as $i => $position) {
-            Officer::firstOrCreate(['name' => 'Sample officer '.($i + 1)], ['position' => $position, 'biography' => 'Sample profile. Replace with an approved officer biography and portrait.', 'term' => 'Sample term', 'hierarchy_level' => $i < 2 ? $i : 2, 'sort_order' => $i, 'status' => 'published']);
-        }
         Center::updateOrCreate(['slug' => 'ubbog-ni-ayat'], [
             'name' => 'CENTRO UBBOG NI AYAT',
             'description' => null,
@@ -87,6 +84,8 @@ class CmsSeeder extends Seeder
             'sample-service-recognition.png' => 'Service recognition',
             'sample-mountain-sunrise.png' => 'Mountain sunrise',
             'sample-uecfi-slideshow.webm' => 'Sample UECFI slideshow video',
+            'officers/paola-concubierta.jpg' => 'Officer portrait',
+            'officers/bianca-vanessa-salada.jpg' => 'Officer portrait',
         ];
         $media = [];
         foreach ($sampleImages as $filename => $name) {
@@ -97,6 +96,24 @@ class CmsSeeder extends Seeder
                 Storage::disk('public')->put($path, file_get_contents(public_path('images/'.$filename)));
             }
             $media[$filename] = $image;
+        }
+        $officerProfiles = [
+            ['name' => 'HMNA. PAOLA CONCUBIERTA', 'position' => 'President', 'social_url' => 'https://www.facebook.com/paolalerts', 'term' => '2025-2026', 'hierarchy_level' => 0, 'photo' => 'officers/paola-concubierta.jpg'],
+            ['name' => 'HMNA. BIANCA VANESSA F. SALADA', 'position' => 'Secretary', 'social_url' => 'https://www.facebook.com/binazki', 'term' => '2024-2026', 'hierarchy_level' => 1, 'photo' => 'officers/bianca-vanessa-salada.jpg'],
+            ['name' => 'Sample officer 3', 'position' => 'Assistant Secretary', 'social_url' => null, 'term' => 'Sample term', 'hierarchy_level' => 1, 'photo' => null],
+            ['name' => 'Sample officer 4', 'position' => 'Treasurer', 'social_url' => null, 'term' => 'Sample term', 'hierarchy_level' => 3, 'photo' => null],
+        ];
+        foreach ($officerProfiles as $i => $profile) {
+            Officer::updateOrCreate(['sort_order' => $i], [
+                'name' => $profile['name'],
+                'position' => $profile['position'],
+                'biography' => 'Sample profile. Replace with an approved officer biography and portrait.',
+                'social_url' => $profile['social_url'],
+                'term' => $profile['term'],
+                'hierarchy_level' => $profile['hierarchy_level'],
+                'photo_id' => $profile['photo'] ? $media[$profile['photo']]->id : null,
+                'status' => 'published',
+            ]);
         }
         $sampleStories = [
             ['news', 'A new chapter for our community', 'sample-community-circle.png', ['sample-service-recognition.png', 'sample-uecfi-slideshow.webm']],
@@ -111,7 +128,6 @@ class CmsSeeder extends Seeder
                 ])->all());
             }
         }
-        Officer::where('name', 'Sample officer 1')->update(['photo_id' => $media['sample-service-recognition.png']->id]);
         HeroSlide::firstOrCreate(['media_id' => $media['sample-mountain-sunrise.png']->id], ['sort_order' => 0]);
         HeroSlide::firstOrCreate(['media_id' => $media['sample-community-circle.png']->id], ['sort_order' => 1]);
     }
