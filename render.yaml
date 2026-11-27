@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: d23-website
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        sync: false
+      - key: APP_URL
+        sync: false
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_DRIVER
+        value: file
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: CMS_MEDIA_DISK
+        value: neon
+      - key: NEON_STORAGE_ACCESS_KEY_ID
+        sync: false
+      - key: NEON_STORAGE_SECRET_ACCESS_KEY
+        sync: false
+      - key: NEON_STORAGE_REGION
+        sync: false
+      - key: NEON_STORAGE_BUCKET
+        sync: false
+      - key: NEON_STORAGE_ENDPOINT
+        sync: false
