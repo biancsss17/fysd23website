@@ -84,13 +84,14 @@ class CmsSeeder extends Seeder
             'sample-service-recognition.png' => 'Service recognition',
             'sample-mountain-sunrise.png' => 'Mountain sunrise',
             'sample-uecfi-slideshow.webm' => 'Sample UECFI slideshow video',
+            'GbvvJJdTpQgfMEWJsIQzYS9SMuGouX87otapmtP0.mp4' => 'Untitled design.mp4',
             'officers/paola-concubierta.jpg' => 'Officer portrait',
             'officers/bianca-vanessa-salada.jpg' => 'Officer portrait',
         ];
         $media = [];
         foreach ($sampleImages as $filename => $name) {
             $path = 'cms/'.$filename;
-            $isVideo = str_ends_with($filename, '.webm');
+            $isVideo = in_array(pathinfo($filename, PATHINFO_EXTENSION), ['mp4', 'webm', 'ogg'], true);
             $image = Media::firstOrCreate(['path' => $path], ['name' => $name, 'alt' => $isVideo ? 'Sample UECFI slideshow video' : $name.' sample photograph']);
             if (! Storage::disk('public')->exists($path) && is_file(public_path('images/'.$filename))) {
                 Storage::disk('public')->put($path, file_get_contents(public_path('images/'.$filename)));
@@ -128,7 +129,15 @@ class CmsSeeder extends Seeder
                 ])->all());
             }
         }
-        HeroSlide::firstOrCreate(['media_id' => $media['sample-mountain-sunrise.png']->id], ['sort_order' => 0]);
-        HeroSlide::firstOrCreate(['media_id' => $media['sample-community-circle.png']->id], ['sort_order' => 1]);
+        // Keep the deployed slideshow aligned with the local version: mountain, uploaded video, community.
+        // Only these known seeded assets are replaced; administrator-added slides remain untouched.
+        HeroSlide::whereIn('media_id', [
+            $media['sample-mountain-sunrise.png']->id,
+            $media['sample-community-circle.png']->id,
+            $media['GbvvJJdTpQgfMEWJsIQzYS9SMuGouX87otapmtP0.mp4']->id,
+        ])->delete();
+        HeroSlide::create(['media_id' => $media['sample-mountain-sunrise.png']->id, 'sort_order' => 0]);
+        HeroSlide::create(['media_id' => $media['GbvvJJdTpQgfMEWJsIQzYS9SMuGouX87otapmtP0.mp4']->id, 'sort_order' => 1]);
+        HeroSlide::create(['media_id' => $media['sample-community-circle.png']->id, 'sort_order' => 2]);
     }
 }
